@@ -1,0 +1,86 @@
+PHASE 1 — Ingestion
+   RSS feeds + scrapers
+   → raw article store (title, body, outlet, timestamp)
+
+PHASE 2 — Feature Extraction (deterministic)
+   • Lexicon-based signals
+     - sentiment lexicons (VADER)
+     - political word lists (loaded terms, dog whistles)
+     - emotion lexicons (anger, fear, hope)
+   • Structural signals
+     - who gets quoted (named entity recognition)
+     - what's in headline vs. body (framing analysis)
+     - passive vs. active voice ratio
+   • Topic modeling (BERTopic or LDA)
+     → consistent, reproducible, no LLM involved
+
+PHASE 3 — Classification (BERT layer)
+   • Fine-tuned BERT for political leaning
+   • Fine-tuned BERT for tension/conflict scoring
+   • Trained on YOUR labeled dataset (see below)
+   → deterministic scores, versioned models
+
+PHASE 4 — LLM as labeler (offline, one-time)
+   • Used ONLY to generate training labels
+   • Run same article through LLM N times,
+     take majority vote → reduces variance
+   • Human spot-check a sample
+   → this is where LLM lives, not in production
+
+PHASE 5 — Aggregation
+   • Daily outlet-level political position
+   • Topic polarity (variance across outlets)
+   • Tension index (composite of conflict signals)
+
+PHASE 6 — Card generation
+   → Instagram output
+
+Feature vector to built:
+
+article_features = {
+    # Lexicon signals
+    "vader_compound": -0.72,           # vader (or distilcamembert for french)
+    "conflict_word_density": 0.14,     # spacy + custom lexicon ✅
+    "anger_score": 0.31,               # NRC Emotion Lexicon (emolex)
+    "fear_score": 0.28,                # custom (i built this = create a lexicon using an LLM)
+    "political_loading_score": 0.09,
+
+    # Structural signals
+    "framing_gap": 0.43,               # custom (function that returns a score) or LLM
+    "passive_voice_ratio": 0.38,       # spacy dependency parse ✅
+    "govt_voice_ratio": 0.8,           # spacy ✅ + voice category lexicon (=custom (another lexicon to built ?))
+    "opposition_voice_ratio": 0.1,     # spacy + voice category lexicon (=custom (another lexicon to built ?))
+
+    # NER signals
+    "geopolitical_entity_count": 4,    # spacy NER
+    "conflict_verb_with_entity": True, # spacy NER + custom (function that returns a bool) or LLM
+    "actor_is_subject": False,         # spacy dpendency parse, custom (function that returns a bool) or LLM
+
+    # Topic signals
+    "topic_id": 42,                    # BERTopic
+    "topic_probability": 0.87,         # BERTopic
+}
+
+article_features = {
+    # Lexicon signals
+    "vader_compound": -0.72,
+    "conflict_word_density": 0.14,
+    "anger_score": 0.31,
+    "fear_score": 0.28,
+    "political_loading_score": 0.09,
+
+    # Structural signals
+    "framing_gap": 0.43,
+    "passive_voice_ratio": 0.38,
+    "govt_voice_ratio": 0.8,
+    "opposition_voice_ratio": 0.1,
+
+    # NER signals
+    "geopolitical_entity_count": 4,
+    "conflict_verb_with_entity": True,
+    "actor_is_subject": False,
+
+    # Topic signals
+    "topic_id": 42,
+    "topic_probability": 0.87,
+}

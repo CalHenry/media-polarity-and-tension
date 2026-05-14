@@ -1,0 +1,152 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.6",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "6ffa4d029a42c7420cc9656fbee4e2bd",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "71eb7605f3f90de7d06831785eb3b33f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "5706a349e92a22928d9a998336d05b85",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "76fd98ce65d7f6b407611a52fb883e76",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rLoading weights:   0%|                                                                                                                           | 0/103 [00:00<?, ?it/s]\rLoading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 103/103 [00:00<00:00, 9672.08it/s]\n\rBatches:   0%|                                                                                                                                     | 0/1 [00:00<?, ?it/s]\rBatches: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1/1 [00:00<00:00, 13.49it/s]\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "af6a66b3ae1d0fed12be76193bfa871f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "16141340aade99f714d0e5f2a1cbae97",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "a44c75143b5ec7f6081a0cd3aaa4dd0a",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "'str' object does not support item assignment",
+          "traceback": null
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/zw/nklgtqvx7c7dqp840mw14_2m0000gn/T/marimo_89301/__marimo__cell_SFPL_.py&quot;</span>, line <span class=\"m\">3</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">article</span><span class=\"p\">[</span><span class=\"s2\">&quot;topic_id&quot;</span><span class=\"p\">]</span> <span class=\"o\">=</span> <span class=\"nb\">int</span><span class=\"p\">(</span><span class=\"n\">topics</span><span class=\"p\">[</span><span class=\"n\">i</span><span class=\"p\">])</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~~~~^^^^^^^^^^^^</span>\n<span class=\"gr\">TypeError</span>: <span class=\"n\">&#39;str&#39; object does not support item assignment</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "PhHL",
+      "code_hash": "f765a876bd9aa6a2e5d11c2a53716333",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "\nTopic Overview:\n   Topic  Count                             Name  \\\n0     -1      2  -1_dati_soup\u00e7ons_couple_rachida   \n1      0      6                   0_de_le_son_du   \n2      1      4                   1_de_la_en_une   \n3      2      4                   2_de_des_la_le   \n\n                                      Representation  \\\n0  [dati, soup\u00e7ons, couple, rachida, octobre, du,...   \n1       [de, le, son, du, au, les, sur, qui, se, en]   \n2   [de, la, en, une, pas, un, france, \u00e9t\u00e9, par, il]   \n3   [de, des, la, le, en, pays, pour, et, les, dans]   \n\n                                 Representative_Docs  \n0  [7-Octobre\u00a0: Isra\u00ebl se dote d\u2019un tribunal mili...  \n1  [Tueur en s\u00e9rie de Choisy-le-Roi\u00a0: une experti...  \n2  [Derri\u00e8re les querelles d\u2019ego, les fractures i...  \n3  [Comment l\u2019Ukraine tente d\u2019\u00e9largir son horizon...  \n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "HWVe",
+      "code_hash": null,
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "50a84c57f51e9ef7258e9bb9b083ec3e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "acb5cbdd08a011dcef7741bc8cc16bbf",
+      "outputs": [],
+      "console": []
+    }
+  ]
+}

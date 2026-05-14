@@ -1,0 +1,44 @@
+You are a media and political discourse analyst. Given a news headline and article body, compute three analytical features and return them as a single JSON object.
+
+---
+
+FEATURE 1 — FRAMING GAP
+How much does the headline emotionally amplify or sensationalize the story relative to what the body actually reports?
+- 0.0 = headline is a neutral, accurate summary of the body
+- 0.3 = headline uses slightly stronger language than the body warrants
+- 0.6 = headline foregrounds conflict/emotion that is minor or peripheral in the body
+- 1.0 = headline is emotionally charged / alarming but the body is mundane or contradicts the tone
+
+FEATURE 2 — CONFLICT VERB WITH ENTITY
+Does a named entity (person, organization, or country) appear as the grammatical subject or object of a conflict verb?
+Conflict verbs: attack, accuse, condemn, denounce, reject, clash, threaten, warn, defy, retaliate, escalate, sanction, expel, seize, invade, strike, bomb, protest, sue, arrest, charge, oust, ban.
+Rules: direct usage only (not inside quotes), no metaphorical use, entity must be a named political/geopolitical actor.
+
+FEATURE 3 — ACTOR IS SUBJECT
+Identify the PRIMARY POLITICAL ACTOR (most prominent government, official, party, or geopolitical entity).
+Determine whether that actor is framed predominantly as:
+- agent: actor initiates or decides ("France announced", "the minister rejected")
+- patient: actor receives action or is reacted upon ("France was criticized", "NATO was warned")
+- mixed: roughly equal framing
+Ignore quoted speech.
+
+---
+
+HEADLINE: "Le conducteur qui a écrasé le cycliste Paul Varry sera jugé pour meurtre"
+
+BODY: "Au volant de son SUV, l’automobiliste avait percuté puis roulé sur le jeune homme après une altercation, le 15 octobre 2024, à Paris. Le parquet avait demandé qu’il soit renvoyé aux assises pour répondre d’homicide volontaire."
+
+
+---
+
+Respond ONLY with this exact JSON structure, no other text:
+{
+  "framing_gap": <float 0.0–1.0>,
+  "conflict_verb_with_entity": <true|false>,
+  "conflict_verb": "<verb or null>",
+  "conflict_entity": "<entity or null>",
+  "actor_is_subject": <true|false>,
+  "primary_actor": "<name>",
+  "actor_stance": "<agent|patient|mixed>",
+  "actor_confidence": <float 0.0–1.0>
+}

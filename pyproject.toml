@@ -3,5 +3,16 @@ name = "news-politics-score"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = []
+requires-python = ">=3.11"
+dependencies = [
+    "bertopic>=0.17.4",
+    "feedparser>=6.0.12",
+    "ipython>=9.13.0",
+    "marimo>=0.23.6",
+    "numpy>=2.4.4",
+    "scikit-learn>=1.8.0",
+    "sentence-transformers>=5.5.0",
+    "spacy[apple]>=3.8.14",
+    "transformers>=5.8.1",
+    "vadersentiment>=3.3.2",
+]
