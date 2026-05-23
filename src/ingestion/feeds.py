@@ -1,3 +1,5 @@
+import logging
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -58,16 +60,26 @@ OUTLETS = [
     ("Charlie Hebdo", "satirical / libertarian left", "https://charliehebdo.fr/feed/"),
 ]
 
-DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
+RAW_DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "raw"
 
 
-def main() -> None:
+logger = logging.getLogger(__name__)
+
+
+def extract_feeds() -> dict:
     now = datetime.now(timezone.utc)
     rows = []
+    outlets_fetched = 0
 
     for outlet, profile, url in OUTLETS:
-        print(f"Fetching {outlet} ...")
-        feed = feedparser.parse(url)
+        logger.info("Fetching %s ...", outlet)
+        try:
+            feed = feedparser.parse(url)
+            outlets_fetched += 1
+        except Exception:
+            logger.exception("Failed to fetch %s", outlet)
+            continue
+
         for entry in feed.entries:
             published = None
             if entry.get("published_parsed"):
@@ -87,10 +99,30 @@ def main() -> None:
                 }
             )
 
+    if not rows:
+        logger.error("No entries extracted from any outlet")
+        return {"status": "error", "error": "No entries extracted", "entries": 0}
+
     df = pl.DataFrame(rows)
-    out_path = DATA_DIR / f"extracted_{now.strftime('%Y%m%d_%H%M%S')}.parquet"
+    out_path = RAW_DATA_DIR / f"extracted_{now.strftime('%Y%m%d_%H%M%S')}.parquet"
     df.write_parquet(out_path)
-    print(f"\nDone — {df.height} entries written to {out_path}")
+    logger.info("Done — %d entries written to %s", df.height, out_path)
+    return {
+        "status": "success",
+        "entries": df.height,
+        "outlets": outlets_fetched,
+        "output_path": str(out_path),
+    }
+
+
+def main() -> None:
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    result = extract_feeds()
+    sys.exit(0 if result["status"] == "success" else 1)
 
 
 if __name__ == "__main__":
