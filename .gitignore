@@ -9,6 +9,10 @@ wheels/
 # Virtual environments
 .venv
 
+#---#
 data/
 logs/
 status/
+
+# relevant for launchd automation job - ignored for github
+run_pipeline.sh
