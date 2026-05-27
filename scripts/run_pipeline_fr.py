@@ -5,18 +5,20 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.ingestion.feeds import extract_feeds
+from src.ingestion.feeds import FR_OUTLETS, extract_feeds
 from src.ingestion.process import clean_data
 
+LANGUAGE = "fr"
+
 LOG_DIR = Path(__file__).resolve().parent / "logs"
-STATUS_DIR = Path(__file__).resolve().parent / "status"
+STATUS_PATH = Path(__file__).resolve().parent / f"status_{LANGUAGE}.json"
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
-        logging.FileHandler(LOG_DIR / "pipeline.log"),
+        logging.FileHandler(LOG_DIR / f"pipeline_{LANGUAGE}.log"),
         logging.StreamHandler(),
     ],
 )
@@ -25,15 +27,14 @@ logger = logging.getLogger("pipeline")
 
 def run() -> None:
     LOG_DIR.mkdir(exist_ok=True)
-    STATUS_DIR.mkdir(exist_ok=True)
 
     t0 = time.time()
     logger.info("=" * 50)
-    logger.info("Pipeline started")
+    logger.info("Pipeline started [%s]", LANGUAGE.upper())
 
     logger.info("Phase 1/2 — Extraction")
     t1 = time.time()
-    r1 = extract_feeds()
+    r1 = extract_feeds(outlets=FR_OUTLETS, language=LANGUAGE)
     dt1 = time.time() - t1
     ok1 = r1.get("status") == "success"
     logger.info(
@@ -50,7 +51,7 @@ def run() -> None:
     logger.info("Phase 2/2 — Deduplication")
     t2 = time.time()
     new_raw_path = r1.get("output_path")
-    r2 = clean_data(new_raw_path=new_raw_path)
+    r2 = clean_data(new_raw_path=new_raw_path, language=LANGUAGE)
     dt2 = time.time() - t2
     ok2 = r2.get("status") == "success"
     logger.info(
@@ -72,12 +73,13 @@ def run() -> None:
     duplicates_removed = r2["duplicates_removed"]
     new_records = records_extracted - duplicates_removed
 
-    processed_dir = Path(__file__).resolve().parent / "data" / "processed"
+    processed_dir = Path(__file__).resolve().parent / "data" / "processed" / LANGUAGE
     output_size_bytes = sum(f.stat().st_size for f in processed_dir.glob("*.parquet"))
     output_size_mb = round(output_size_bytes / (1024 * 1024), 1)
 
     status = {
         "last_run": datetime.now(timezone.utc).isoformat(),
+        "language": LANGUAGE,
         "status": "success",
         "records_extracted": records_extracted,
         "duplicates_removed": duplicates_removed,
@@ -85,15 +87,16 @@ def run() -> None:
         "runtime_seconds": round(dt, 1),
         "output_size_mb": output_size_mb,
     }
-    with open(STATUS_DIR / "status.json", "w") as f:
+    with open(STATUS_PATH, "w") as f:
         json.dump(status, f, indent=2)
-    logger.info("Status written to %s", STATUS_DIR / "status.json")
+    logger.info("Status written to %s", STATUS_PATH)
 
 
 def aborted(t0: float, reason: str) -> None:
     dt = time.time() - t0
     status = {
         "last_run": datetime.now(timezone.utc).isoformat(),
+        "language": LANGUAGE,
         "status": "error",
         "reason": reason,
         "records_extracted": 0,
@@ -102,7 +105,7 @@ def aborted(t0: float, reason: str) -> None:
         "runtime_seconds": round(dt, 1),
         "output_size_mb": 0.0,
     }
-    with open(STATUS_DIR / "status.json", "w") as f:
+    with open(STATUS_PATH, "w") as f:
         json.dump(status, f, indent=2)
     logger.error("Pipeline aborted after %.1fs: %s", dt, reason)
 
