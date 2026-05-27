@@ -10,8 +10,10 @@ from src.ingestion.process import clean_data
 
 LANGUAGE = "fr"
 
-LOG_DIR = Path(__file__).resolve().parent / "logs"
-STATUS_PATH = Path(__file__).resolve().parent / f"status_{LANGUAGE}.json"
+LOG_DIR = Path(__file__).resolve().parent.parent / "logs"
+STATUS_PATH = (
+    Path(__file__).resolve().parent.parent / "status" / f"status_{LANGUAGE}.json"
+)
 
 logging.basicConfig(
     level=logging.INFO,
