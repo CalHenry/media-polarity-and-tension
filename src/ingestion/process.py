@@ -4,21 +4,21 @@ from pathlib import Path
 
 import polars as pl
 
-DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
-RAW_DIR = DATA_DIR / "raw"
-PROCESSED_DIR = DATA_DIR / "processed"
-
 logger = logging.getLogger(__name__)
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 def _sanitize(name: str) -> str:
     return name.replace(" ", "_").replace("'", "_").replace("’", "_")
 
 
-def clean_data(new_raw_path: str | None = None) -> dict:
-    PROCESSED_DIR.mkdir(exist_ok=True)
+def clean_data(new_raw_path: str | None = None, language: str = "fr") -> dict:
+    raw_dir = BASE_DIR / "data" / "raw" / language
+    processed_dir = BASE_DIR / "data" / "processed" / language
+    processed_dir.mkdir(parents=True, exist_ok=True)
 
-    raw_files = sorted(RAW_DIR.glob("extracted_*.parquet"))
+    raw_files = sorted(raw_dir.glob("extracted_*.parquet"))
     if not raw_files:
         logger.warning("No raw extraction files found")
         return {"status": "success", "outlets": 0, "entries": 0, "duplicates_removed": 0}
@@ -34,7 +34,7 @@ def clean_data(new_raw_path: str | None = None) -> dict:
 
     for outlet in outlets:
         new_rows = raw.filter(pl.col("outlet") == outlet)
-        path = PROCESSED_DIR / f"{_sanitize(outlet)}.parquet"
+        path = processed_dir / f"{_sanitize(outlet)}.parquet"
 
         if path.exists():
             existing = pl.read_parquet(path)
@@ -68,12 +68,18 @@ def clean_data(new_raw_path: str | None = None) -> dict:
 
 
 def main() -> None:
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--language", default="fr", choices=["fr", "en"])
+    args = parser.parse_args()
+
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-    result = clean_data()
+    result = clean_data(language=args.language)
     sys.exit(0 if result["status"] == "success" else 1)
 
 
