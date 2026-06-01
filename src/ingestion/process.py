@@ -19,11 +19,43 @@ def clean_data(new_raw_path: str | None = None, language: str = "fr") -> dict:
     processed_dir.mkdir(parents=True, exist_ok=True)
 
     raw_files = sorted(raw_dir.glob("extracted_*.parquet"))
+
+    all_parquet = list(raw_dir.glob("*.parquet"))
+    unmatched = [f.name for f in all_parquet if not f.name.startswith("extracted_")]
+    if unmatched:
+        logger.warning(
+            "Found %d parquet file(s) in %s that don't match pattern "
+            "'extracted_*.parquet' and will be skipped: %s",
+            len(unmatched),
+            raw_dir,
+            unmatched,
+        )
+
     if not raw_files:
         logger.warning("No raw extraction files found")
-        return {"status": "success", "outlets": 0, "entries": 0, "duplicates_removed": 0}
+        return {
+            "status": "success",
+            "outlets": 0,
+            "entries": 0,
+            "duplicates_removed": 0,
+        }
 
-    raw = pl.concat(pl.read_parquet(f) for f in raw_files)
+    frames = []
+    for f in raw_files:
+        try:
+            frames.append(pl.read_parquet(f))
+        except Exception:
+            logger.warning("Skipping corrupt or invalid file during read: %s", f)
+    if not frames:
+        logger.warning("No valid raw extraction files could be read")
+        return {
+            "status": "success",
+            "outlets": 0,
+            "entries": 0,
+            "duplicates_removed": 0,
+        }
+
+    raw = pl.concat(frames)
     outlets = raw["outlet"].unique()
     total_entries = 0
     duplicates_removed = 0
