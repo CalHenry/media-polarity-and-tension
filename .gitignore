@@ -15,4 +15,5 @@ logs/
 status/
 
 # relevant for launchd automation job - ignored for github
-run_pipeline.sh
+run_pipeline_fr.sh
+run_pipeline_en.sh

@@ -5,6 +5,10 @@
 
 Data is extracted from RSS feeds.  
 
-A simple pipeline, extract the feeds, then process the data (remove duplicates, sort entries by origin into seperate files). All the data is stored in parquet files.
+2 identical pipelines for 2 extractions in 2 languages:
+- French press (from France)
+- English language press (not only UK or US)
 
-A launchd job is running on my mac to run the pipeline every day.
+Simple pipeline:
+- feeds.py: extract the data using feedparser, write the content to a single parquet file using polars in ```data/raw/{language}```
+- process.py: gather all the extraction parquet files, concat, remove duplicates and sort entries by journal. Output to ```data/processed```
